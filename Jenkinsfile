@@ -23,11 +23,22 @@ pipeline {
   agent {
     kubernetes {
       label 'angular-cli'
-      containerTemplate {
-        name 'angular-cli'
-        image 'teracy/angular-cli:1.5.0'
-        ttyEnabled true
-        command 'cat'
+      containerTemplates {
+        angular {
+          name 'angular-cli'
+          image 'teracy/angular-cli:1.5.0'
+          ttyEnabled true
+          command 'cat'
+        }
+        nginx {
+          label 'docker'
+          containerTemplate {
+            name 'docker'
+            image 'docker:18.06.0-ce'
+            ttyEnabled true
+            command 'cat'
+          }
+        }
       }
     }
   }
@@ -73,12 +84,6 @@ pipeline {
             image 'docker:18.06.0-ce'
             ttyEnabled true
             command 'cat'
-          }
-          volumes {
-            hostPathVolume{
-                hostPath '/var/run/docker.sock',
-                mountPath '/var/run/docker.sock'
-            }
           }
         }
       }
