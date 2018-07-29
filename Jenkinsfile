@@ -24,9 +24,16 @@ pipeline {
         command 'cat'
       }
     }
+    nginx {
+      label 'nginx'
+      containerTemplate {
+        name 'nginx'
+        image 'nginx:1.15.2'
+        ttyEnabled true
+        command 'cat'
+      }
+    }
   }
-
-  agent none
 
   stages {
     stage('Checkout') {
@@ -44,6 +51,11 @@ pipeline {
     }
 
     stage('Install dependencies') {
+
+      agent {
+        label 'nginx'
+      }
+
       steps {
         echo "Install npm dependencies"
       }
