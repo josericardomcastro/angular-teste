@@ -64,6 +64,19 @@ pipeline {
     }
 
     stage('Build image') {
+
+      agent {
+        kubernetes {
+          label 'docker'
+          containerTemplate {
+            name 'docker'
+            image 'docker:18.06.0-ce'
+            ttyEnabled true
+            command 'cat'
+          }
+        }
+      }
+
       steps {
         echo "Build code in production version"
         sh """
