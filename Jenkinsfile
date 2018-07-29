@@ -6,7 +6,6 @@ def createNamespace (namespace) {
     sh "[ ! -z \"\$(kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
 }
 
-
 pipeline {
 
   options {
@@ -26,72 +25,39 @@ pipeline {
     }
   }
 
-  agent {
-    kubernetes {
-      label 'nginx'
-      containerTemplate {
-        name 'nginx'
-        image 'nginx:1.15.2'
-        ttyEnabled true
-        command 'cat'
-      }
-    }
-  }
-
   stages {
     stage('Checkout') {
-
-      agent {
-        label 'angular-cli'
-      }
-
+      def commitId
       steps {
         echo "Check out angular code"
         checkout scm
+        commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         sh 'ls -l'
-        sh 'npm install'
+        echo "commitid => ${commitId}"
       }
     }
 
     stage('Install dependencies') {
-
-      agent {
-        label 'nginx'
-      }
-
       steps {
         echo "Install npm dependencies"
+        sh 'npm install'
+        sh 'ls -l'
       }
     }
 
     stage('Build') {
-
-      agent {
-        label 'nginx'
-      }
-
       steps {
         echo "Build code in production version"
       }
     }
 
     stage('Test') {
-
-      agent {
-        label 'nginx'
-      }
-
       steps {
         echo 'Testing the code'
       }
     }
 
     stage('Deploy') {
-
-      agent {
-        label 'nginx'
-      }
-
       steps {
         echo 'Deploying in kubernetes'
       }
