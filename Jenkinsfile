@@ -24,13 +24,13 @@ pipeline {
     kubernetes {
       label 'angular-cli'
       containerTemplates [
-        angular {
+        {
           name 'angular-cli'
           image 'teracy/angular-cli:1.5.0'
           ttyEnabled true
           command 'cat'
         }
-        nginx {
+        {
           label 'docker'
           containerTemplate {
             name 'docker'
