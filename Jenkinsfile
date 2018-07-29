@@ -26,8 +26,8 @@ pipeline {
   }
 
   stages {
+    def commitId
     stage('Checkout') {
-      def commitId
       steps {
         echo "Check out angular code"
         checkout scm
