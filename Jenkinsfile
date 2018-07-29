@@ -17,7 +17,7 @@ pipeline {
 
   environment {
     VERSION = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-    IMAGE = 'josericardomcastro/' + JOB_NAME
+    IMAGE = "josericardomcastro/${JOB_NAME}"
   }
 
   agent {
