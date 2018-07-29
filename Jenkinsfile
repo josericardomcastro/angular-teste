@@ -32,7 +32,7 @@ pipeline {
       steps {
         echo "Check out angular code"
         checkout scm
-         = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         sh 'ls -l'
         echo "commitid => ${commitId}"
       }
