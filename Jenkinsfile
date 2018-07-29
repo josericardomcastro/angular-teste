@@ -84,7 +84,7 @@ pipeline {
       }
 
       steps {
-        echo "Build code in production version"
+        echo "Build image"
         sh """
           docker build -t ${IMAGE} .
           docker tag ${IMAGE} ${IMAGE}:${VERSION}
