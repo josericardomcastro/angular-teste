@@ -24,7 +24,10 @@ pipeline {
         command 'cat'
       }
     }
-    nginx {
+  }
+
+  agent {
+    kubernetes {
       label 'nginx'
       containerTemplate {
         name 'nginx'
@@ -62,18 +65,33 @@ pipeline {
     }
 
     stage('Build') {
+
+      agent {
+        label 'nginx'
+      }
+
       steps {
         echo "Build code in production version"
       }
     }
 
     stage('Test') {
+
+      agent {
+        label 'nginx'
+      }
+
       steps {
         echo 'Testing the code'
       }
     }
 
     stage('Deploy') {
+
+      agent {
+        label 'nginx'
+      }
+
       steps {
         echo 'Deploying in kubernetes'
       }
