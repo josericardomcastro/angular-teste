@@ -16,8 +16,8 @@ pipeline {
   }
 
   environment {
-    //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
-    COMMITID = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    VERSION = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+    IMAGE = 'josericardomcastro/' + JOB_NAME
   }
 
   agent {
@@ -37,9 +37,9 @@ pipeline {
       steps {
         echo "Check out angular code"
         checkout scm
-        sh "echo ${COMMITID}"
+        sh "echo ${VERSION}"
         sh 'ls -l'
-        echo "commitid => ${commitId}"
+        echo "version => ${VERSION}"
       }
     }
 
@@ -51,15 +51,26 @@ pipeline {
       }
     }
 
-    stage('Build') {
+    stage('Test') {
+      steps {
+        echo 'Testing the code'
+      }
+    }
+
+    stage('Build code') {
       steps {
         echo "Build code in production version"
       }
     }
 
-    stage('Test') {
+    stage('Build image') {
       steps {
-        echo 'Testing the code'
+        echo "Build code in production version"
+        sh """
+          docker build -t ${IMAGE} .
+          docker tag ${IMAGE} ${IMAGE}:${VERSION}
+          docker push ${IMAGE}:${VERSION}
+        """
       }
     }
 
