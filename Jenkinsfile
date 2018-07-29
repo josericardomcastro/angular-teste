@@ -6,6 +6,8 @@ def createNamespace (namespace) {
     sh "[ ! -z \"\$(kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
 }
 
+def commitId
+
 pipeline {
 
   options {
@@ -26,12 +28,11 @@ pipeline {
   }
 
   stages {
-    def commitId
     stage('Checkout') {
       steps {
         echo "Check out angular code"
         checkout scm
-        commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+         = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         sh 'ls -l'
         echo "commitid => ${commitId}"
       }
