@@ -23,7 +23,7 @@ pipeline {
   agent {
     kubernetes {
       label 'angular-cli'
-      containerTemplates {
+      containerTemplates [
         angular {
           name 'angular-cli'
           image 'teracy/angular-cli:1.5.0'
@@ -39,7 +39,7 @@ pipeline {
             command 'cat'
           }
         }
-      }
+      ]
     }
   }
 
