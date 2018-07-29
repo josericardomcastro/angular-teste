@@ -6,13 +6,18 @@ def createNamespace (namespace) {
     sh "[ ! -z \"\$(kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
 }
 
-def commitId
+
 
 pipeline {
 
   options {
     // Build auto timeout
     timeout(time: 60, unit: 'MINUTES')
+  }
+
+  environment {
+    //Use Pipeline Utility Steps plugin to read information from pom.xml into env variables
+    COMMITID = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
   }
 
   agent {
@@ -32,7 +37,7 @@ pipeline {
       steps {
         echo "Check out angular code"
         checkout scm
-        commitId = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+        sh "echo ${COMMITID}"
         sh 'ls -l'
         echo "commitid => ${commitId}"
       }
