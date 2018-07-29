@@ -23,7 +23,7 @@ pipeline {
   agent {
     kubernetes {
       label 'angular-cli'
-      containerTemplates [
+      containerTemplates {
         containerTemplate {
           name 'docker'
           image 'docker:18.06.0-ce'
@@ -37,7 +37,7 @@ pipeline {
           ttyEnabled true
           command 'cat'
         }
-      ]
+      }
     }
   }
 
