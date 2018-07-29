@@ -23,23 +23,21 @@ pipeline {
   agent {
     kubernetes {
       label 'angular-cli'
-      containerTemplates {
-        {
+      containerTemplates [
+        containerTemplate {
+          name 'docker'
+          image 'docker:18.06.0-ce'
+          ttyEnabled true
+          command 'cat'
+        }
+
+        containerTemplate {
           name 'angular-cli'
           image 'teracy/angular-cli:1.5.0'
           ttyEnabled true
           command 'cat'
         }
-        {
-          label 'docker'
-          containerTemplate {
-            name 'docker'
-            image 'docker:18.06.0-ce'
-            ttyEnabled true
-            command 'cat'
-          }
-        }
-      }
+      ]
     }
   }
 
