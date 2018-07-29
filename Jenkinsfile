@@ -26,8 +26,15 @@ pipeline {
     }
   }
 
+  agent none
+
   stages {
     stage('Checkout') {
+
+      agent {
+        label 'angular-cli'
+      }
+
       steps {
         echo "Check out angular code"
         checkout scm
