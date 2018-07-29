@@ -14,24 +14,20 @@ pipeline {
     timeout(time: 60, unit: 'MINUTES')
   }
 
-  agent none
-
-  pod {
-    containers {
-      container {
+  agent {
+    kubernetes {
+      label 'angular-cli'
+      containerTemplate {
         name 'angular-cli'
         image 'teracy/angular-cli:1.5.0'
+        ttyEnabled true
+        command 'cat'
       }
     }
   }
 
   stages {
     stage('Checkout') {
-      agent {
-        container {
-          name 'angular-cli'
-        }
-      }
       steps {
         echo "Check out angular code"
         checkout scm
