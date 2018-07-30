@@ -6,8 +6,6 @@ def createNamespace (namespace) {
     sh "[ ! -z \"\$(kubectl get ns ${namespace} -o name 2>/dev/null)\" ] || kubectl create ns ${namespace}"
 }
 
-
-
 pipeline {
 
   options {
@@ -23,21 +21,12 @@ pipeline {
   agent {
     kubernetes {
       label 'angular-cli'
-      containerTemplates ([
-        containerTemplate {
-          name 'docker'
-          image 'docker:18.06.0-ce'
-          ttyEnabled true
-          command 'cat'
-        }
-
-        containerTemplate {
-          name 'angular-cli'
-          image 'teracy/angular-cli:1.5.0'
-          ttyEnabled true
-          command 'cat'
-        }
-      ])
+      containerTemplate {
+        name 'angular-cli'
+        image 'teracy/angular-cli:1.5.0'
+        ttyEnabled true
+        command 'cat'
+      }
     }
   }
 
